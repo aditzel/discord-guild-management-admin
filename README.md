@@ -4,6 +4,10 @@ I enjoy playing MMOs and one of the primary activities is guild organized events
 of all of the members involved in the raid. One of the currently most popular communication tools is [Discord](https://discordapp.com). This project 
 is a personal endeavor in buildig an admin API service to power a Discord Bot and an SPA admin tool to manage and track raid events.
 
+Currently, as of version 1.0.0-SNAPSHOT, the UI is generated on the server side. This is temporary in order to 
+get the larger moving pieces in place. In an upcoming version I will be splitting the UI to an SPA framework and 
+this project will just provide a RESTful API. 
+
 ## Create a Discord App And Generate Client Secrets
 
 1. Visit [https://discordapp.com/developers/applications/me]
