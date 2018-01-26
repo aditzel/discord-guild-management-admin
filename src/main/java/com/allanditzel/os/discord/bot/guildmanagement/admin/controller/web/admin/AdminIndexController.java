@@ -1,20 +1,17 @@
 package com.allanditzel.os.discord.bot.guildmanagement.admin.controller.web.admin;
 
-import com.allanditzel.os.discord.bot.guildmanagement.admin.repo.DiscordUserRepository;
-import com.allanditzel.os.discord.bot.guildmanagement.admin.security.PrincipalHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,19 +19,28 @@ public class AdminIndexController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminIndexController.class);
 
-    private DiscordUserRepository discordUserRepository;
-
-    private AdminIndexController() {}
+    @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
 
     @Autowired
-    public AdminIndexController(OAuth2RestTemplate restTemplate, DiscordUserRepository discordUserRepository) {
-        this.discordUserRepository = discordUserRepository;
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    public AdminIndexController() {
     }
 
     @RequestMapping
-    public String index(Principal principal, Model model) {
+    public String index(Model model, OAuth2AuthenticationToken authentication) {
 
-        Long discordUserId = PrincipalHelper.getDiscordUserIdFromPrincipal(principal);
+        OAuth2AuthorizedClient authorizedClient =
+                this.authorizedClientService.loadAuthorizedClient(
+                        authentication.getAuthorizedClientRegistrationId(),
+                        authentication.getName());
+
+        LOGGER.info("Principal name: {}", authorizedClient.getPrincipalName());
+        LOGGER.info("Details: {}", authentication.getPrincipal().getAttributes());
+
+//        LOGGER.info("User details service user: {}", userDetailsService.loadUserByUsername(authorizedClient.getPrincipalName()));
 
         return "/admin/index";
     }

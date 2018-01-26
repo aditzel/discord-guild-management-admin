@@ -1,25 +1,28 @@
-security:
-  basic:
-    enabled: false
-discord:
-  client:
-    clientId: ${DISCORD_CLIENT_ID}
-    clientSecret: ${DISCORD_CLIENT_SECRET}
-    accessTokenUri: https://discordapp.com/api/oauth2/token
-    userAuthorizationUri: https://discordapp.com/api/oauth2/authorize
-#      scope: identify,bot,gdm.join
-    scope: identify,guilds
-    clientAuthenticationScheme: form
-  resource:
-    userInfoUri: https://discordapp.com/api/users/@me
-  user:
-    guildsUrl: https://discordapp.com/api/users/@me/guilds
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          discord:
+            client-id: ${DISCORD_CLIENT_ID}
+            client-secret: ${DISCORD_CLIENT_SECRET}
+            authorizationGrantType: authorization_code
+            scope: identify,guilds
+            redirectUriTemplate: http://aditzel.local:8080/login/oauth2/code/discord
+            clientName: discord
+        provider:
+          discord:
+            authorization-uri: https://discordapp.com/api/oauth2/authorize
+            token-uri: https://discordapp.com/api/oauth2/token
+            user-info-uri: https://discordapp.com/api/users/@me
+            userNameAttribute: username
   thymeleaf:
     cache: true
+discord:
+  guildsUrl: https://discordapp.com/api/users/@me/guilds
 logging:
   level:
-#      org.springframework.security: DEBUG
+    org.springframework.security: DEBUG
 #      org.springframework.boot.autoconfigure.security: DEBUG
 #      org.springframework.web: DEBUG
 endpoints:
