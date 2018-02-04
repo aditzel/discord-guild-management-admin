@@ -13,7 +13,7 @@ this project will just provide a RESTful API.
 1. Visit [https://discordapp.com/developers/applications/me]
 2. Click on `New App`.
 3. Give your application a name.
-4. Add a redirect URL. E.g. if you're running this on your laptop/desktop ensure the URL is one that resolves in your browser to your own computer.
+4. Add a redirect URL. E.g. if you're running this on your laptop/desktop ensure the URL is one that resolves in your browser to your own computer. By default what the Spring boot application expects is: http://<host that you can be redirected to>:8080/login/oauth2/code/discord
 5. Make a note of the `Client ID` under `APP DETAILS`. You will need it in the step below.
 6. Click `click to reveal` next to `Client Secret` and make a note of this value. You will need it in the step below. 
 
