@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <!--
+        <!-- TODO: switch away from the snapshot
             Temporarily switching to snapshot version to handle bug with OAuth2ClientPropertiesRegistrationAdapter
             ignoring userNameAttribute. See:
             https://github.com/spring-projects/spring-boot/pull/10672
@@ -24,9 +24,11 @@
     </parent>
 
     <properties>
+        <kotlin.version>1.2.21</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>9</java.version>
+        <io.micrometer.version>1.0.0-rc.9</io.micrometer.version>
     </properties>
 
     <dependencies>
@@ -75,6 +77,20 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- TODO: stop overriding the transitive dependency
+                 Overriding this transitive dependency since the version pulled in by Spring Actuator is the SNAPSHOT
+                 version of the micro-meter code library, which has issues with the casing of the field.
+              -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-core</artifactId>
+                <version>${io.micrometer.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
